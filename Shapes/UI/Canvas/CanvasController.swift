@@ -4,9 +4,6 @@ import UIKit
 class CanvasController: UIViewController {
 
     let model: ShapeModel
-    var selectedIndex: Int? {
-        didSet { updateView() }
-    }
 
     override init(nibName: String?, bundle: Bundle?) {
         self.model = ScopedConfiguration.current.model
@@ -22,6 +19,26 @@ class CanvasController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.model.add(observer: self)
+        updateView()
+    }
+}
+
+
+extension CanvasController : ModelObserver {
+    func modelDidModifyShape(at index: Int) {
+        updateView()
+    }
+
+    func modelDidInsertShape(at index: Int) {
+        updateView()
+    }
+
+    func modelDidRemoveShape(at index: Int) {
+        updateView()
+    }
+
+    func modelDidChangeSelection() {
         updateView()
     }
 }
@@ -29,8 +46,10 @@ class CanvasController: UIViewController {
 
 extension CanvasController {
     func updateView() {
-        if let selectedIndex = selectedIndex {
-            detailDescriptionLabel?.text = model.shapes[selectedIndex].name
+        if let selectedIndex = model.selectedShapeIndex {
+            detailDescriptionLabel?.text = model[selectedIndex].name
+        } else {
+            detailDescriptionLabel?.text = ""
         }
     }
 }
