@@ -41,7 +41,8 @@ fileprivate extension ShapeListController {
 // MARK: - model notifications
 extension ShapeListController : ModelObserver {
     func modelDidModifyShape(at index: Int) {
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        // TODO: only reload if there's something new to display
+//        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
     func modelDidInsertShape(at index: Int) {
@@ -58,14 +59,14 @@ extension ShapeListController : ModelObserver {
             let indexPath = IndexPath(row: selectedShapeIndex, section: 0)
             if selectedRows != [indexPath] {
                 selectedRows?.forEach {
-                    tableView.deselectRow(at: $0, animated: true)
+                    tableView.deselectRow(at: $0, animated: false)
                 }
-                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
             }
         } else {
             if let selectedRows = selectedRows {
                 selectedRows.forEach {
-                    tableView.deselectRow(at: $0, animated: true)
+                    tableView.deselectRow(at: $0, animated: false)
                 }
             }
         }
@@ -83,7 +84,7 @@ extension ShapeListController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ShapeCell", for: indexPath)
 
-        cell.textLabel!.text = model[indexPath.row].name
+        cell.textLabel!.text = model[shapeAt: indexPath.row].name
         return cell
     }
 

@@ -20,6 +20,8 @@
 		91CE5EC92212CF0D0054859E /* ScopedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5EC82212CF0D0054859E /* ScopedConfiguration.swift */; };
 		91CE5ECD2212F2090054859E /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ECC2212F2090054859E /* ShapeView.swift */; };
 		91CE5ECF2212F68B0054859E /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ECE2212F68B0054859E /* Shape.swift */; };
+		91CE5ED12213157E0054859E /* InteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ED02213157E0054859E /* InteractionController.swift */; };
+		91CE5ED3221327810054859E /* CoreGraphicsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ED2221327810054859E /* CoreGraphicsExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,8 @@
 		91CE5ECB2212D59A0054859E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		91CE5ECC2212F2090054859E /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
 		91CE5ECE2212F68B0054859E /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		91CE5ED02213157E0054859E /* InteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionController.swift; sourceTree = "<group>"; };
+		91CE5ED2221327810054859E /* CoreGraphicsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				91CE5EA82212B71B0054859E /* CanvasController.swift */,
+				91CE5ED02213157E0054859E /* InteractionController.swift */,
 				91CE5ECC2212F2090054859E /* ShapeView.swift */,
 				91CE5EBE2212C4C20054859E /* Canvas.storyboard */,
 			);
@@ -134,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				91CE5EC82212CF0D0054859E /* ScopedConfiguration.swift */,
+				91CE5ED2221327810054859E /* CoreGraphicsExtensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -214,9 +220,11 @@
 				91CE5EC92212CF0D0054859E /* ScopedConfiguration.swift in Sources */,
 				91CE5EC62212CBA70054859E /* ShapeModel.swift in Sources */,
 				91CE5EC32212C5ED0054859E /* MainSplitViewController.swift in Sources */,
+				91CE5ED3221327810054859E /* CoreGraphicsExtensions.swift in Sources */,
 				91CE5EA92212B71B0054859E /* CanvasController.swift in Sources */,
 				91CE5EA72212B71B0054859E /* ShapeListController.swift in Sources */,
 				91CE5EA52212B71A0054859E /* AppDelegate.swift in Sources */,
+				91CE5ED12213157E0054859E /* InteractionController.swift in Sources */,
 				91CE5ECD2212F2090054859E /* ShapeView.swift in Sources */,
 				91CE5ECF2212F68B0054859E /* Shape.swift in Sources */,
 			);

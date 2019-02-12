@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 
 /// This type represents the shared model that view controllers use
@@ -15,8 +16,10 @@ public class ShapeModel {
     fileprivate var observers: [WeakObserver] = []
     var selectedShapeIndex: Int? {
         didSet {
-            notify {
-                $0.modelDidChangeSelection()
+            if selectedShapeIndex != oldValue {
+                notify {
+                    $0.modelDidChangeSelection()
+                }
             }
         }
     }
@@ -55,7 +58,7 @@ public extension ShapeModel {
         return shapes.count
     }
 
-    subscript(_ index: Int) -> Shape {
+    subscript(shapeAt index: Int) -> Shape {
         get {
             return shapes[index]
         }
@@ -66,6 +69,16 @@ public extension ShapeModel {
         }
     }
 
+    var selectedShape: Shape? {
+        guard let selectedShapeIndex = selectedShapeIndex else { return nil }
+        return shapes[selectedShapeIndex]
+    }
+
+    subscript(shapeAt position: CGPoint) -> Shape? {
+        guard let index = indexOfShape(at: position) else { return nil }
+        return shapes[index]
+    }
+
     func insert(_ shape: Shape, at index: Int) {
         shapes.insert(shape, at: index)
         notify { $0.modelDidInsertShape(at: index) }
@@ -74,6 +87,13 @@ public extension ShapeModel {
     func remove(at index: Int) {
         shapes.remove(at: index)
         notify { $0.modelDidRemoveShape(at: index) }
+    }
+
+    func indexOfShape(at position: CGPoint) -> Int? {
+        return shapes.enumerated().first {
+            _, shape in
+            return shape.contains(position)
+        }?.offset
     }
 }
 

@@ -9,6 +9,18 @@ public struct Shape {
 }
 
 
+public extension Shape {
+    func contains(_ point: CGPoint) -> Bool {
+        return path.contains(point - origin,
+                             using: .winding,
+                             transform: .identity)
+    }
+
+    var boundingBox: CGRect {
+        return path.boundingBoxOfPath
+    }
+}
+
 // MARK: - Some template shape values
 public extension Shape {
 

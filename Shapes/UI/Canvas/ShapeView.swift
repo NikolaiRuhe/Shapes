@@ -1,5 +1,6 @@
 import UIKit
 
+
 /// UI representation of a single shape.
 
 class ShapeView: UIView {
@@ -33,8 +34,7 @@ extension ShapeView {
         var position = shape.origin
 
         if let superview = self.superview {
-            position.x += superview.bounds.midX
-            position.y += superview.bounds.midY
+            position += superview.bounds.mid
         }
 
         center = position
@@ -49,8 +49,10 @@ fileprivate extension ShapeView {
         switch highlight {
         case .default:
             shapeLayer.lineWidth = 1
+            shapeLayer.strokeColor = UIColor(white: 0, alpha: 0.3).cgColor
         case .selected:
-            shapeLayer.lineWidth = 4
+            shapeLayer.lineWidth = 2
+            shapeLayer.strokeColor = UIColor(red: 0, green: 0.6, blue: 0, alpha: 1).cgColor
         }
     }
 
@@ -59,7 +61,6 @@ fileprivate extension ShapeView {
     }
 
     func setup() {
-        shapeLayer.strokeColor = UIColor(white: 0, alpha: 0.8).cgColor
         shapeLayer.fillColor = nil
         update()
     }
