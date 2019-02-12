@@ -4,6 +4,7 @@ import UIKit
 class CanvasController: UIViewController {
 
     let model: ShapeModel
+    var shapeViews: [ShapeView] = []
 
     override init(nibName: String?, bundle: Bundle?) {
         self.model = ScopedConfiguration.current.model
@@ -15,41 +16,56 @@ class CanvasController: UIViewController {
         super.init(coder: coder)
     }
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.model.add(observer: self)
-        updateView()
+        updateAllViews()
     }
 }
 
 
 extension CanvasController : ModelObserver {
     func modelDidModifyShape(at index: Int) {
-        updateView()
+        updateAllViews()
     }
 
     func modelDidInsertShape(at index: Int) {
-        updateView()
+        updateAllViews()
     }
 
     func modelDidRemoveShape(at index: Int) {
-        updateView()
+        updateAllViews()
     }
 
     func modelDidChangeSelection() {
-        updateView()
+        updateSelection()
     }
 }
 
 
 extension CanvasController {
-    func updateView() {
-        if let selectedIndex = model.selectedShapeIndex {
-            detailDescriptionLabel?.text = model[selectedIndex].name
-        } else {
-            detailDescriptionLabel?.text = ""
+    func updateAllViews() {
+        shapeViews.forEach {
+            $0.removeFromSuperview()
+        }
+        shapeViews = []
+
+        for shape in model.shapes {
+            let shapeView = ShapeView()
+            view.addSubview(shapeView)
+            shapeView.update(from: shape)
+            shapeViews.append(shapeView)
+        }
+
+        if let index = model.selectedShapeIndex {
+            shapeViews[index].highlight = .selected
+        }
+    }
+
+    func updateSelection() {
+        for (index, shapeView) in shapeViews.enumerated() {
+            let isSelected = index == model.selectedShapeIndex
+            shapeView.highlight = isSelected ? .selected : .default
         }
     }
 }

@@ -33,7 +33,7 @@ class ShapeListController: UITableViewController {
 
 fileprivate extension ShapeListController {
     @objc func insertNewObject(_ sender: Any) {
-        model.insert(Shape(name: Date().description), at: 0)
+        model.insert(Shape.randomShape, at: 0)
     }
 }
 

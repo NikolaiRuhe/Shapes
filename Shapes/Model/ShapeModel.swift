@@ -11,7 +11,7 @@ import Foundation
 /// than a data model. This is due to the constrained scope of this test app.
 
 public class ShapeModel {
-    fileprivate var shapes: [Shape] = []
+    fileprivate(set) var shapes: [Shape] = []
     fileprivate var observers: [WeakObserver] = []
     var selectedShapeIndex: Int? {
         didSet {
@@ -75,11 +75,6 @@ public extension ShapeModel {
         shapes.remove(at: index)
         notify { $0.modelDidRemoveShape(at: index) }
     }
-}
-
-
-public struct Shape {
-    var name: String
 }
 
 
