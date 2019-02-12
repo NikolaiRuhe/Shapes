@@ -15,10 +15,6 @@ public extension Shape {
                              using: .winding,
                              transform: .identity)
     }
-
-    var boundingBox: CGRect {
-        return path.boundingBoxOfPath
-    }
 }
 
 // MARK: - Some template shape values

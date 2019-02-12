@@ -6,6 +6,7 @@ class CanvasController: UIViewController {
     let model: ShapeModel
     var shapeViews: [ShapeView] = []
     var interactionController: InteractionController? = nil
+    var layoutSize: CGSize = .zero
 
     override init(nibName: String?, bundle: Bundle?) {
         self.model = ScopedConfiguration.current.model
@@ -21,6 +22,11 @@ class CanvasController: UIViewController {
         super.viewDidLoad()
         self.model.add(observer: self)
         updateAllViews()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateAllViewsIfNeeded()
     }
 
     deinit {
@@ -120,7 +126,15 @@ fileprivate extension CanvasController {
         shapeViews[index].update(from: model[shapeAt: index])
     }
 
+    func updateAllViewsIfNeeded() {
+        if view.bounds.size != layoutSize {
+            updateAllViews()
+        }
+    }
+
     func updateAllViews() {
+        layoutSize = view.bounds.size
+
         shapeViews.forEach {
             $0.removeFromSuperview()
         }

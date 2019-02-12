@@ -26,6 +26,7 @@ final class InteractionController {
 }
 
 
+// MARK: - touch handling
 extension InteractionController {
 
     func processTouchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) -> Bool {
@@ -69,9 +70,23 @@ extension InteractionController {
     }
 
     func processTouchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) -> Bool {
-        canvas.endInteraction()
-        return true
+        defer {
+            canvas.endInteraction()
+        }
+
+        switch mode {
+        case .idle:
+            return false
+
+        case .translation(let shapeIndex, let originalShape):
+            canvas.model[shapeAt: shapeIndex].origin = originalShape.origin
+            return true
+        }
     }
+}
+
+
+fileprivate extension InteractionController {
 
     var currentPosition: CGPoint {
         return touch.location(in: canvas.view) - canvas.view.bounds.mid
