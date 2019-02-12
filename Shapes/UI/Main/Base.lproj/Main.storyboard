@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Main Split View Controller-->
@@ -13,10 +15,100 @@
             <objects>
                 <splitViewController id="H1p-Uh-vWS" customClass="MainSplitViewController" customModule="Shapes" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <connections>
+                        <segue destination="oOM-eZ-59Y" kind="relationship" relationship="masterViewController" id="msZ-uF-OpN"/>
+                        <segue destination="Jyu-Sp-5ow" kind="relationship" relationship="detailViewController" id="Bmu-q4-jlf"/>
+                    </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZU-Oi-B1e" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-856" y="-330"/>
+        </scene>
+        <!--Dummy View Controller-->
+        <scene sceneID="w9h-gm-YOU">
+            <objects>
+                <viewController id="oOM-eZ-59Y" userLabel="Dummy View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NR4-hd-dad">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hwz-zZ-shd">
+                                <rect key="frame" x="70" y="366.5" width="180.5" height="35"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">Dummy View Controller
+</string>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="(will be discarded after loading)">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.63871008819999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="hwz-zZ-shd" firstAttribute="centerY" secondItem="NR4-hd-dad" secondAttribute="centerY" id="JPq-ws-wAO"/>
+                            <constraint firstItem="hwz-zZ-shd" firstAttribute="centerX" secondItem="NR4-hd-dad" secondAttribute="centerX" id="UGn-BB-pQc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="YIS-g5-JOA"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OES-Qh-uTd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-90" y="-657"/>
+        </scene>
+        <!--Dummy View Controller-->
+        <scene sceneID="9VT-CN-4iM">
+            <objects>
+                <viewController id="Jyu-Sp-5ow" userLabel="Dummy View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8Ep-tH-lqe">
+                        <rect key="frame" x="0.0" y="0.0" width="703.5" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6N-al-Ogi">
+                                <rect key="frame" x="261.5" y="366.5" width="180.5" height="35"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">Dummy View Controller
+</string>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="(will be discarded after loading)">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="12" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.63871008819999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="O6N-al-Ogi" firstAttribute="centerX" secondItem="8Ep-tH-lqe" secondAttribute="centerX" id="eP1-YM-dRQ"/>
+                            <constraint firstItem="O6N-al-Ogi" firstAttribute="centerY" secondItem="8Ep-tH-lqe" secondAttribute="centerY" id="h8k-jh-gb7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="tK4-Ct-jmH"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p8G-FE-B90" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-90.234375" y="-4.6875"/>
         </scene>
     </scenes>
 </document>
