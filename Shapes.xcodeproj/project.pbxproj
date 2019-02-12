@@ -22,6 +22,7 @@
 		91CE5ECF2212F68B0054859E /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ECE2212F68B0054859E /* Shape.swift */; };
 		91CE5ED12213157E0054859E /* InteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ED02213157E0054859E /* InteractionController.swift */; };
 		91CE5ED3221327810054859E /* CoreGraphicsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ED2221327810054859E /* CoreGraphicsExtensions.swift */; };
+		91CE5ED5221337270054859E /* ShapeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CE5ED4221337270054859E /* ShapeExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		91CE5ECE2212F68B0054859E /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		91CE5ED02213157E0054859E /* InteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionController.swift; sourceTree = "<group>"; };
 		91CE5ED2221327810054859E /* CoreGraphicsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtensions.swift; sourceTree = "<group>"; };
+		91CE5ED4221337270054859E /* ShapeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 		91CE5ECA2212D1460054859E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				91CE5ED4221337270054859E /* ShapeExtensions.swift */,
 				91CE5EC82212CF0D0054859E /* ScopedConfiguration.swift */,
 				91CE5ED2221327810054859E /* CoreGraphicsExtensions.swift */,
 			);
@@ -221,6 +224,7 @@
 				91CE5EC62212CBA70054859E /* ShapeModel.swift in Sources */,
 				91CE5EC32212C5ED0054859E /* MainSplitViewController.swift in Sources */,
 				91CE5ED3221327810054859E /* CoreGraphicsExtensions.swift in Sources */,
+				91CE5ED5221337270054859E /* ShapeExtensions.swift in Sources */,
 				91CE5EA92212B71B0054859E /* CanvasController.swift in Sources */,
 				91CE5EA72212B71B0054859E /* ShapeListController.swift in Sources */,
 				91CE5EA52212B71A0054859E /* AppDelegate.swift in Sources */,

@@ -34,3 +34,10 @@ extension CGRect {
         return CGPoint(x: midX, y: midY)
     }
 }
+
+
+extension CGSize {
+    var aspectRatio: CGFloat {
+        return height == 0 ? 0 : width / height
+    }
+}
