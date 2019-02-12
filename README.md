@@ -38,3 +38,5 @@ be actual Swift modules (libraries) but for this simple app I just keep source f
 - The UI layer is separated into "scenes". Each scene represents a screen or main part of a screen. The files
 making up a scene (swift, storyboard) are kept together in subfolders.
 - Storyboards are used to model the UI but with one storyboard file per scene. No segues.
+- Swift code is separated into extensions as much as possible. Only stuff that needs to be in the main type
+declaration goes there (required initializers, stored properties, overrides). Everything else has its own `extension`.  
