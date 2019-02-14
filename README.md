@@ -1,11 +1,10 @@
 ##  Bezier Drawing App
 
-This is a simple bezier drawing app. It is not meant to be useful in any way but exists to assess developer
-skills for a job interview at [LiveSurface](http://www.livesurface.com).
+This is a simple bezier drawing app.
 
 - Applicant: Nikolai Ruhe
 - Date: 2019-02-12
-- Time used: 9:00 am ... ongoing
+- Time used: 7.5h
 
 ### Full description
 
