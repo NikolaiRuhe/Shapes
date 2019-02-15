@@ -2,13 +2,15 @@ import Foundation
 import CoreGraphics
 
 
+/// A simple shape model that provides hit testing and path mutation.
+
 public struct Shape {
     var name: String
     var origin: CGPoint
     var path: CGPath
 }
 
-
+// MARK: - Hit testing
 public extension Shape {
     enum PointType {
         case pointOnPath
@@ -127,6 +129,7 @@ public extension Shape {
 }
 
 
+// MARK: - Mutating access to the shape paths
 extension CGPath {
 
     func translatingPathElement(at elementIndex: Int, type: Shape.PointType, by offset: CGVector) -> CGPath {

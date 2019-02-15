@@ -39,3 +39,7 @@ making up a scene (swift, storyboard) are kept together in subfolders.
 - Storyboards are used to model the UI but with one storyboard file per scene. No segues.
 - Swift code is separated into extensions as much as possible. Only stuff that needs to be in the main type
 declaration goes there (required initializers, stored properties, overrides). Everything else has its own `extension`.  
+- I'm using Apple's `CGPath` as a model for bezier shapes. This has a couple of drawbacks and might be a
+candidate for refactoring. `CGPath` does not provide random access to its elements and cannot modify individual
+parts, without copying the whole object. It might be better to use a custom path model and only use Apple's
+implementation to draw segments.

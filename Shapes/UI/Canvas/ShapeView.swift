@@ -2,6 +2,8 @@ import UIKit
 
 
 /// UI representation of a single shape.
+///
+/// Can highlight path control points and bezier lines.
 
 class ShapeView: UIView {
 

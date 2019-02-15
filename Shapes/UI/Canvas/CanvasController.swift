@@ -1,6 +1,10 @@
 import UIKit
 
 
+/// The `CanvasController` observes the model and fills the view with
+/// `ShapeView` instances accordingly. It also forwards touches to its
+/// `interactionController` to provide interactivity.
+
 class CanvasController: UIViewController {
 
     let model: ShapeModel
