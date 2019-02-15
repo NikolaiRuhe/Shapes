@@ -4,9 +4,10 @@ import UIKit
 class CanvasController: UIViewController {
 
     let model: ShapeModel
-    var shapeViews: [ShapeView] = []
-    var interactionController: InteractionController? = nil
-    var layoutSize: CGSize = .zero
+    fileprivate var shapeViews: [ShapeView] = []
+    fileprivate var interactionController: InteractionController? = nil
+    fileprivate var layoutSize: CGSize = .zero
+    fileprivate(set) var highlightedElementIndex: Int?
 
     override init(nibName: String?, bundle: Bundle?) {
         self.model = ScopedConfiguration.current.model
@@ -95,25 +96,33 @@ extension CanvasController {
     func endInteraction() {
         interactionController = nil
     }
+
+    func highlightElement(at index: Int?) {
+        highlightedElementIndex = index
+        updateSelection()
+    }
 }
 
 
 // MARK: - model notifications
 extension CanvasController : ModelObserver {
+
     func observeModelChange(_ change: ShapeModel.Change) {
-        guard change.phase == .post else {
-            return
-        }
+        switch (change.phase, change.kind) {
 
-        switch change.kind {
+        case (.post, .path(let index)):
+            let shape = model[shapeAt: index]
+            shapeViews[index].path = shape.path
 
-        case .path(let index), .origin (let index):
-            updateView(at: index)
+        case (.post, .origin (let index)):
+            let shape = model[shapeAt: index]
+            shapeViews[index].center = shape.origin + view.bounds.mid
 
-        case .selection:
+        case (.post, .selection):
+            highlightedElementIndex = nil
             updateSelection()
 
-        case .insertShape, .removeShape:
+        case (.post, .insertShape), (.post, .removeShape):
             endInteraction()
             updateAllViews()
 
@@ -125,10 +134,6 @@ extension CanvasController : ModelObserver {
 
 
 fileprivate extension CanvasController {
-
-    func updateView(at index: Int) {
-        shapeViews[index].update(from: model[shapeAt: index])
-    }
 
     func updateAllViewsIfNeeded() {
         if view.bounds.size != layoutSize {
@@ -147,7 +152,8 @@ fileprivate extension CanvasController {
         for shape in model.shapes {
             let shapeView = ShapeView()
             view.addSubview(shapeView)
-            shapeView.update(from: shape)
+            shapeView.path = shape.path
+            shapeView.center = shape.origin + view.bounds.mid
             shapeViews.append(shapeView)
         }
 
@@ -158,8 +164,16 @@ fileprivate extension CanvasController {
 
     func updateSelection() {
         for (index, shapeView) in shapeViews.enumerated() {
-            let isSelected = index == model.selectedShapeIndex
-            shapeView.highlight = isSelected ? .selected : .default
+            guard index == model.selectedShapeIndex else {
+                shapeView.highlight = .default
+                continue
+            }
+
+            if let elementIndex = highlightedElementIndex {
+                shapeView.highlight = .editing(elementIndex: elementIndex)
+            } else {
+                shapeView.highlight = .selected
+            }
         }
     }
 }

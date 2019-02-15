@@ -26,8 +26,8 @@ public protocol ModelObserver: class {
 extension ShapeModel {
 
     public struct Change {
-        let phase: Phase
-        let kind: Kind
+        var phase: Phase
+        var kind: Kind
 
         enum Phase {
             case pre

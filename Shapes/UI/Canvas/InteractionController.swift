@@ -16,6 +16,7 @@ final class InteractionController {
     enum Mode {
         case idle
         case translation(shapeIndex: Int, originalShape: Shape)
+        case point(shapeIndex: Int, elementIndex: Int, pointType: Shape.PointType, originalShape: Shape)
     }
 
     init(with touch: UITouch, canvasController: CanvasController) {
@@ -34,9 +35,29 @@ extension InteractionController {
 
         if let selectedShapeIndex = canvas.model.selectedShapeIndex {
             let shape = canvas.model[shapeAt: selectedShapeIndex]
-            if shape.contains(position) {
+            let hit = shape.hitTest(position,
+                                    includeControlPointsForElementAtIndex: canvas.highlightedElementIndex,
+                                    maximumPointDistance: 12)
+
+            switch hit {
+            case .inside:
                 mode = .translation(shapeIndex: selectedShapeIndex, originalShape: shape)
+                canvas.highlightElement(at: nil)
                 return true
+
+            case .point(var elementIndex, let pointType):
+                mode = .point(shapeIndex: selectedShapeIndex,
+                              elementIndex: elementIndex,
+                              pointType: pointType,
+                              originalShape: shape)
+                if pointType == .controlPoint0 {
+                    elementIndex -= 1
+                }
+                canvas.highlightElement(at: elementIndex)
+                return true
+
+            case .outside:
+                break
             }
         }
 
@@ -61,6 +82,14 @@ extension InteractionController {
         case .translation(let shapeIndex, let originalShape):
             canvas.model[shapeAt: shapeIndex].origin = originalShape.origin + currentTranslation
             return true
+
+        case .point(let shapeIndex, let elementIndex, let pointType, let originalShape):
+            let newPath = originalShape.path.translatingPathElement(at: elementIndex,
+                                                                    type: pointType,
+                                                                    by: currentTranslation)
+            canvas.model[shapeAt: shapeIndex].path = newPath
+
+            return true
         }
     }
 
@@ -78,7 +107,9 @@ extension InteractionController {
         case .idle:
             return false
 
-        case .translation(let shapeIndex, let originalShape):
+        case .translation(let shapeIndex, let originalShape),
+             .point(let shapeIndex, _, _, let originalShape):
+
             canvas.model[shapeAt: shapeIndex].origin = originalShape.origin
             return true
         }

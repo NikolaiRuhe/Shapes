@@ -26,6 +26,37 @@ extension CGPoint {
     static func += (lhs: inout CGPoint, rhs: CGPoint) {
         lhs = lhs + rhs
     }
+
+    static func -= (lhs: inout CGPoint, rhs: CGVector) {
+        lhs = CGPoint(x: lhs.x - rhs.dx, y: lhs.y - rhs.dy)
+    }
+
+    static func -= (lhs: inout CGPoint, rhs: CGPoint) {
+        lhs = lhs - rhs
+    }
+
+    static func * (lhs: CGPoint, rhs: CGFloat) -> CGPoint {
+        return CGPoint(x: lhs.x * rhs, y: lhs.y * rhs)
+    }
+}
+
+
+extension CGVector {
+    var squaredLength: CGFloat {
+        return dx * dx + dy * dy
+    }
+
+    var length: CGFloat {
+        return sqrt(squaredLength)
+    }
+
+    static func * (lhs: CGVector, rhs: CGFloat) -> CGVector {
+        return CGVector(dx: lhs.dx * rhs, dy: lhs.dy * rhs)
+    }
+
+    var angle: CGFloat {
+        return atan2(dy, dx)
+    }
 }
 
 
