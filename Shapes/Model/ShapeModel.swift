@@ -13,20 +13,39 @@ import CoreGraphics
 
 public class ShapeModel {
     fileprivate(set) var shapes: [Shape] = []
+    fileprivate(set) var selectedShapeIndex: Int?
     fileprivate var observers: [WeakObserver] = []
-    var selectedShapeIndex: Int? {
-        didSet {
-            if selectedShapeIndex != oldValue {
-                notify {
-                    $0.modelDidChangeSelection()
-                }
-            }
-        }
-    }
 }
 
+
 // MARK: - Model observing and notifications
+public protocol ModelObserver: class {
+    func observeModelChange(_ change: ShapeModel.Change)
+}
+
 extension ShapeModel {
+
+    public struct Change {
+        let phase: Phase
+        let kind: Kind
+
+        enum Phase {
+            case pre
+            case post
+        }
+
+        enum Kind {
+            case selection(oldIndex: Int?, newIndex: Int?)
+
+            case insertShape(shapeIndex: Int)
+            case removeShape(shapeIndex: Int)
+
+            case path(shapeIndex: Int)
+            case origin(shapeIndex: Int)
+            case name(shapeIndex: Int)
+        }
+    }
+
     fileprivate struct WeakObserver {
         weak var wrapped: ModelObserver?
     }
@@ -41,11 +60,9 @@ extension ShapeModel {
         }
     }
 
-    func notify(_ body: (ModelObserver) -> Void) {
+    func sendNotification(phase: Change.Phase, kind: Change.Kind) {
         observers.forEach {
-            if let observer = $0.wrapped {
-                body(observer)
-            }
+            $0.wrapped?.observeModelChange(Change(phase: phase, kind: kind))
         }
     }
 }
@@ -54,18 +71,24 @@ extension ShapeModel {
 // MARK: - Public shapes access
 public extension ShapeModel {
 
-    var count: Int {
-        return shapes.count
-    }
-
     subscript(shapeAt index: Int) -> Shape {
         get {
             return shapes[index]
         }
 
         set {
+            let originDidChange = shapes[index].origin != newValue.origin
+            let pathDidChange = shapes[index].path != newValue.path
+            let nameDidChange = shapes[index].name != newValue.name
+            guard pathDidChange || originDidChange || nameDidChange else { return }
+
+            if pathDidChange { sendNotification(phase: .pre, kind: .path(shapeIndex: index)) }
+            if originDidChange { sendNotification(phase: .pre, kind: .origin(shapeIndex: index)) }
+            if nameDidChange { sendNotification(phase: .pre, kind: .name(shapeIndex: index)) }
             shapes[index] = newValue
-            notify { $0.modelDidModifyShape(at: index) }
+            if nameDidChange { sendNotification(phase: .post, kind: .origin(shapeIndex: index)) }
+            if originDidChange { sendNotification(phase: .post, kind: .origin(shapeIndex: index)) }
+            if pathDidChange { sendNotification(phase: .post, kind: .path(shapeIndex: index)) }
         }
     }
 
@@ -74,19 +97,39 @@ public extension ShapeModel {
         return shapes[selectedShapeIndex]
     }
 
+    func selectShape(at index: Int) {
+        guard selectedShapeIndex != index else { return }
+
+        let oldValue = selectedShapeIndex
+        sendNotification(phase: .pre, kind: .selection(oldIndex: oldValue, newIndex: index))
+        selectedShapeIndex = index
+        sendNotification(phase: .post, kind: .selection(oldIndex: oldValue, newIndex: index))
+    }
+
+    func deselectShape() {
+        guard let selectedShapeIndex = selectedShapeIndex else { return }
+
+        sendNotification(phase: .pre, kind: .selection(oldIndex: selectedShapeIndex, newIndex: nil))
+        self.selectedShapeIndex = nil
+        sendNotification(phase: .post, kind: .selection(oldIndex: selectedShapeIndex, newIndex: nil))
+
+    }
+
     subscript(shapeAt position: CGPoint) -> Shape? {
         guard let index = indexOfShape(at: position) else { return nil }
         return shapes[index]
     }
 
     func insert(_ shape: Shape, at index: Int) {
+        sendNotification(phase: .pre, kind: .insertShape(shapeIndex: index))
         shapes.insert(shape, at: index)
-        notify { $0.modelDidInsertShape(at: index) }
+        sendNotification(phase: .post, kind: .insertShape(shapeIndex: index))
     }
 
     func remove(at index: Int) {
+        sendNotification(phase: .pre, kind: .removeShape(shapeIndex: index))
         shapes.remove(at: index)
-        notify { $0.modelDidRemoveShape(at: index) }
+        sendNotification(phase: .post, kind: .removeShape(shapeIndex: index))
     }
 
     func indexOfShape(at position: CGPoint) -> Int? {
@@ -95,12 +138,4 @@ public extension ShapeModel {
             return shape.contains(position)
         }?.offset
     }
-}
-
-
-public protocol ModelObserver: class {
-    func modelDidModifyShape(at index: Int)
-    func modelDidInsertShape(at index: Int)
-    func modelDidRemoveShape(at index: Int)
-    func modelDidChangeSelection()
 }

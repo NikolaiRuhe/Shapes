@@ -41,12 +41,12 @@ extension InteractionController {
         }
 
         guard let hitShapeIndex = canvas.model.indexOfShape(at: position) else {
-            canvas.model.selectedShapeIndex = nil
+            canvas.model.deselectShape()
             canvas.endInteraction()
             return false
         }
 
-        canvas.model.selectedShapeIndex = hitShapeIndex
+        canvas.model.selectShape(at: hitShapeIndex)
         mode = .translation(shapeIndex: hitShapeIndex, originalShape: canvas.model[shapeAt: hitShapeIndex])
         return true
     }

@@ -20,7 +20,7 @@ class CanvasController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.model.add(observer: self)
+        model.add(observer: self)
         updateAllViews()
     }
 
@@ -100,22 +100,26 @@ extension CanvasController {
 
 // MARK: - model notifications
 extension CanvasController : ModelObserver {
-    func modelDidModifyShape(at index: Int) {
-        updateView(at: index)
-    }
+    func observeModelChange(_ change: ShapeModel.Change) {
+        guard change.phase == .post else {
+            return
+        }
 
-    func modelDidInsertShape(at index: Int) {
-        endInteraction()
-        updateAllViews()
-    }
+        switch change.kind {
 
-    func modelDidRemoveShape(at index: Int) {
-        endInteraction()
-        updateAllViews()
-    }
+        case .path(let index), .origin (let index):
+            updateView(at: index)
 
-    func modelDidChangeSelection() {
-        updateSelection()
+        case .selection:
+            updateSelection()
+
+        case .insertShape, .removeShape:
+            endInteraction()
+            updateAllViews()
+
+        default:
+            break
+        }
     }
 }
 

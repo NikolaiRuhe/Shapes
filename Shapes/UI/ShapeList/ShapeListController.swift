@@ -26,7 +26,7 @@ class ShapeListController: UITableViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         navigationItem.rightBarButtonItem = addButton
 
-        self.model.add(observer: self)
+        model.add(observer: self)
     }
 }
 
@@ -40,35 +40,28 @@ fileprivate extension ShapeListController {
 
 // MARK: - model notifications
 extension ShapeListController : ModelObserver {
-    func modelDidModifyShape(at index: Int) {
-        // TODO: only reload if there's something new to display
-//        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
+    func observeModelChange(_ change: ShapeModel.Change) {
+        switch (change.phase, change.kind) {
 
-    func modelDidInsertShape(at index: Int) {
-        tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
+        case (.pre, .selection(let oldIndex, _)):
+            guard let oldIndex = oldIndex else { break }
+            tableView.deselectRow(at: IndexPath(row: oldIndex, section: 0), animated: false)
 
-    func modelDidRemoveShape(at index: Int) {
-        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
-    }
+        case (.post, .selection(_, let newIndex)):
+            guard let newIndex = newIndex else { break }
+            tableView.selectRow(at: IndexPath(row: newIndex, section: 0), animated: false, scrollPosition: .none)
 
-    func modelDidChangeSelection() {
-        let selectedRows = tableView.indexPathsForSelectedRows
-        if let selectedShapeIndex = model.selectedShapeIndex {
-            let indexPath = IndexPath(row: selectedShapeIndex, section: 0)
-            if selectedRows != [indexPath] {
-                selectedRows?.forEach {
-                    tableView.deselectRow(at: $0, animated: false)
-                }
-                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-            }
-        } else {
-            if let selectedRows = selectedRows {
-                selectedRows.forEach {
-                    tableView.deselectRow(at: $0, animated: false)
-                }
-            }
+        case (.post, .insertShape(let shapeIndex)):
+            tableView.insertRows(at: [IndexPath(row: shapeIndex, section: 0)], with: .automatic)
+
+        case (.post, .removeShape(let shapeIndex)):
+            tableView.deleteRows(at: [IndexPath(row: shapeIndex, section: 0)], with: .automatic)
+
+        case (.post, .name(let shapeIndex)):
+            tableView.reloadRows(at: [IndexPath(row: shapeIndex, section: 0)], with: .automatic)
+
+        default:
+            break
         }
     }
 }
@@ -78,7 +71,7 @@ extension ShapeListController : ModelObserver {
 extension ShapeListController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.count
+        return model.shapes.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -89,22 +82,22 @@ extension ShapeListController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        model.selectedShapeIndex = indexPath.row
+        model.selectShape(at: indexPath.row)
     }
 
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        model.selectedShapeIndex = nil
+        model.deselectShape()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        model.selectedShapeIndex = nil
+        model.deselectShape()
         return true
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
 
-        model.selectedShapeIndex = nil
+        model.deselectShape()
         model.remove(at: indexPath.row)
     }
 }
